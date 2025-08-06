@@ -1,5 +1,7 @@
 package strivers.linkedlist;
 
+import java.util.HashMap;
+
 public class LL1 {
      static class Node {
         int data;
@@ -104,7 +106,7 @@ public class LL1 {
         new_Node.next=temp;
         return head;
     }
-    public static Node InsertBeforeval(Node head,int val,int before){
+    public static Node InsertBeforeval(Node head,int val,int before){ // insert before val
         if(head.data == before){
             return InsertatBeg(head, val);
         }
@@ -123,7 +125,7 @@ public class LL1 {
 
         return head;
     }
-    public static Node ReverseLL(Node head){
+    public static Node ReverseLL(Node head){ // reverse iterative 
         if(head == null) return head;
         Node curr = head;
         Node prev = null;
@@ -136,6 +138,89 @@ public class LL1 {
         return prev;
 
     }
+    public static Node reverseLLRecr(Node head){ // reverse using recursion 
+        if(head == null || head.next == null){
+            return head;
+        }
+        Node newHead = reverseLLRecr(head.next);
+        head.next.next=head;
+        head.next = null;
+        return newHead;
+    }
+    public static boolean isLoop(Node head){ // detect the cycle in linked list
+        Node slow , fast;
+        slow = fast = head;
+        while(fast!=null && fast.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+            if(slow == fast){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static Node createCustomList() {
+    // Create all nodes
+        Node n1 = new Node(1);
+        Node n2 = new Node(2);
+        Node n15 = new Node(15);
+        Node n9 = new Node(9);
+        Node n4 = new Node(4);
+        Node n13 = new Node(13);
+        Node n6 = new Node(6);
+        Node n7 = new Node(7);
+        Node n8 = new Node(8);
+        // Link them as per the image
+        n1.next = n2;
+        n2.next = n15;
+        n15.next = n9;
+        n9.next = n4;
+        n4.next = n13;
+        n13.next = n6;
+        n6.next = n7;
+        n7.next = n8;
+        n8.next = n9; // Creates the cycle
+
+        return n1; // head of the list
+    }
+
+    public static int lenOfLoop(Node head){
+        HashMap<Node,Integer> hm = new HashMap<>();
+        int count = 1;
+        Node temp = head;
+        while (temp!=null) {
+            
+            if(!hm.containsKey(temp)){
+                hm.put(temp, count);
+            }else{
+                return count - hm.get(temp);
+            }
+            count++;
+            temp = temp.next;
+        }
+        return 0;
+    }
+
+    public static int lenOfLoopFast(Node head){
+        Node fast,slow;
+        fast = slow = head;
+        int count = 0;
+        while(fast!=null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+            if(slow == fast){
+                count++;
+                fast = fast.next;
+                while (fast!=slow) {
+                    fast = fast.next;
+                    count++;
+                }
+                return count;
+            }
+        }
+        return 0;
+    }
+
     public static void main(String[] args) {
         int [] arr = {1,2,3,4,5};
         Node converted = ConvertToLL(arr);
@@ -145,8 +230,16 @@ public class LL1 {
         //converted = DeleteAt(converted, 1);
         //converted = deleteByVal(converted, 0);
         //converted=InsertatBeg(converted, 10);
-        converted = ReverseLL(converted);
-        Display(converted);
+        //Node a = new Node(10);
+        //Node b = new Node(20);
+        //a.next = b;
+        //b.next = a;
+        //System.out.println(isLoop(a));
+        //converted = reverseLLRecr(converted);
+        //Display(converted);
+        //System.out.println(isLoop(converted));
+        Node cyclelist = createCustomList();
+        System.out.println(lenOfLoopFast(cyclelist));
         //converted=InsertBeforeval(converted, 10, 2);
         //Display(converted);
 

@@ -1,5 +1,6 @@
 package dev.giridharanks.springproject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/todo") // maping a common request to it's sub requests
 public class TodoController {
+    
+    @Autowired
+    public TodoService a;
+
+    @GetMapping("/get")
+    public String get(){
+        return a.getAll();
+    }
+
     @GetMapping("/1") // sub requests
     public String todo(){
         return "todo";

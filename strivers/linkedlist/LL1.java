@@ -221,9 +221,70 @@ public class LL1 {
         return 0;
     }
 
+    public static Node OrderOnesTwosZeros(Node head){
+        Node ZeroHead = new Node(-1);
+        Node Onehead,Twohead;
+        Onehead = new Node(-1);
+        Twohead = new Node(-1);
+        Node OneTemp = Onehead;
+        Node TwoTemp = Twohead;
+        Node ZeroTemp = ZeroHead;
+        Node temp = head;
+        while(temp!=null){
+            if(temp.data == 0){
+                ZeroTemp.next = temp;
+                ZeroTemp = temp;
+            }
+            else if(temp.data == 2){
+                TwoTemp.next = temp;
+                TwoTemp = temp;
+            }
+            else if(temp.data == 1){
+                OneTemp.next = temp;
+                OneTemp = temp;
+            }
+            temp = temp.next;
+        }
+        ZeroTemp.next = (Onehead.next != null)? Onehead.next : Twohead.next;
+        OneTemp.next = (Twohead.next != null)? Twohead.next : null;
+        TwoTemp.next = null; 
+        
+        return ZeroHead.next;
+    }
+    public static Node AddOne(Node head){
+        Node Reversedhead = ReverseLL(head);
+        Node temp = Reversedhead;
+        int total = 0;
+        int carry = 0;
+        Node dummy = new Node(-1);
+        Node Retemp = dummy;
+        while (temp!=null) {
+            total = carry;
+            total += temp.data;
+            if(temp==Reversedhead){
+                total = total+1;
+            }
+            int remainder = total%10;
+            carry = total / 10;
+            Retemp.next = new Node(remainder);
+            Retemp = Retemp.next;
+            temp = temp.next;
+        }
+        return ReverseLL(dummy.next);
+
+    }
     public static void main(String[] args) {
         int [] arr = {1,2,3,4,5};
         Node converted = ConvertToLL(arr);
+        int [] arr2 = {0,1,2,1,0,1};
+        Node List2 = ConvertToLL(arr2);
+        List2 = OrderOnesTwosZeros(List2);
+        //Display(List2);
+        Node a = new Node(1);
+        a.next = new Node(9);
+        a.next.next = new Node(9);
+        a = AddOne(a);
+        Display(a);
         //System.out.println("count: "+ListLength(converted));
         //System.out.println(isfound(converted, 10));
         //Display(converted);
@@ -238,8 +299,6 @@ public class LL1 {
         //converted = reverseLLRecr(converted);
         //Display(converted);
         //System.out.println(isLoop(converted));
-        Node cyclelist = createCustomList();
-        System.out.println(lenOfLoopFast(cyclelist));
         //converted=InsertBeforeval(converted, 10, 2);
         //Display(converted);
 
